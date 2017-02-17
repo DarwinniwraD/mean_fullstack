@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "qiucksite",
+=======
+  "name": "quicksite",
+>>>>>>> ab7944e3817233ae61045a6ca7a653b987877622
   "version": "0.0.0",
   "private": true,
   "scripts": {
