@@ -25,7 +25,7 @@ module.exports.reviewsCreate = function () {
 
 var doAddReview = function (req, res, location) {
   if (!location) {
-    sendJsonResponse(res, 404, {"message", "locationsid not found"});
+    sendJsonResponse(res, 404, {"message": "locationsid not found"});
   } else {
     location.reviews.push({
       author: req.body.author,
@@ -33,7 +33,7 @@ var doAddReview = function (req, res, location) {
       reviewText: req.body.reviewText
     });
     location.save(function (err, location) {
-      var thisReview,
+      var thisReview;
       if (err) {
         sendJsonResponse(res, 400, err);
       } else {
@@ -63,7 +63,7 @@ var doSetAverageRating = function (location) {
     };
     ratingAverage = parseInt(ratingTotal/reviewCount, 10);
     location.rating = ratingAverage;
-    location.save(function (err,) {
+    location.save(function (err) {
       if (err) {
         console.log(err); 
       } else {

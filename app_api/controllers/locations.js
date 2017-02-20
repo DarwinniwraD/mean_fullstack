@@ -73,7 +73,7 @@ module.exports.locationsReadOne = function (req, res) {
 // update a location
 module.exports.locationsUpdateOne = function (req, res) {
   if (!req.params.locationsid) {
-    sendJsonResponse(res, 404, {"message", "not found, locationsid is required"});
+    sendJsonResponse(res, 404, {"message": "not found, locationsid is required"});
     return;
   };
   Loc.findById(req.params.locationsid)

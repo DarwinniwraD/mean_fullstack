@@ -7,17 +7,108 @@ var apioptions = {
 //   apioptions.server = "https://quicksite.herokuapp.com"
 // }
 
-var renderHomepage = function (req, res, responseBody) {
-  res.render('locations-list', {
-    title: "Quicksite",
-    sidebar: "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for.",
-    pageHeader: {
-    	title: 'Quicksite',
-		strapline: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, saepe voluptatem architecto possimus odit perspiciatis asperiores modi iusto. In repudiandae soluta quae est delectus quidem tempora sunt voluptatum, at rerum.'
-    },
-    locations: responseBody
-  });
+
+var _formatDistance = function (distance) {
+	var numDistance, unit;
+	if (distance > 1) {
+		numDistance = parseFloat(distance).toFixed(1);
+		unit = "km";
+	} else {
+		numDistance = parseInt(distance*1000, 10);
+		unit = "m";
+	}
+	return numDistance + unit;
 };
+
+var _showError = function (req, res, status) {
+	var title, content;
+	if (status === 404) {
+		title = "404, page not found";
+		content = "sorry, we can't find this page"
+	} else {
+		title = status + ", something goes wrong";
+		content = "Someting, somewhere has gone just a litter bit wrong"
+	}
+	res.status(status);
+	res.render('generic-text', {
+		title: title,
+		content: content
+	});
+};
+
+var renderHomepage = function (req, res, responseBody) {
+	var message;
+	if (!responseBody instanceof Array) {
+		message = "API look up error";
+		responseBody = [];
+	} else if{
+		if (!responseBody.length) {
+			message = "No place was found";
+		};
+	}
+	res.render('locations-list', {
+		title: "Quicksite",
+		sidebar: "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for.",
+		pageHeader: {
+			title: 'Quicksite',
+			strapline: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, saepe voluptatem architecto possimus odit perspiciatis asperiores modi iusto. In repudiandae soluta quae est delectus quidem tempora sunt voluptatum, at rerum.'
+		},
+		locations: responseBody,
+		message: message
+	});
+};
+
+var renderDetailPage = function (req, res, locDetail) {
+	res.render('location-info', {
+		title: locDetail.name,
+		pageHeader: {title: locDetail.name},
+		sidebar: {
+			context: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, temporibus, labore! Nulla qui soluta repudiandae veniam nihil voluptate consequatur, necessitatibus explicabo tempore libero ex quae. Reprehenderit repellendus voluptates mollitia. Suscipit itaque quaerat aliquam ipsa autem, ut delectus voluptatibus quasi libero.',
+			callToAction: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et modi neque eaque, quasi rerum, a fugit sint iste. Accusamus, natus!'
+		},
+		location: locDetail
+	});
+};
+
+var renderrReviewForm = function (req, res, locDetail) {
+	res.render('location-review-form', {
+		title: 'Review ' + locDetail.name + 'on quicksite',
+		pageHeader: {title: 'Review ' + locDetail.name}
+	});
+};
+
+var postdata = {
+	author: req.body.name,
+	rating: parseInt(req.body.rating, 10),
+	reviewText: req.body.review
+};
+
+var getLocationInfo = function (req, res, callback) {
+	var requestOptions, path;
+	path = "/api/locations" + req.params.locationsid;
+	requestOptions = {
+		url: apioptions.server + path,
+		method: "GET",
+		json: {}
+	};
+	request(
+		requestOptions,
+		function (err, response, body) {
+			var data = body;
+			if (response.statusCode === 200) {
+				data.coords ={
+					lng: body.coords[0],
+					lat: body.coords[1]
+				};
+				callback(req, res, data);
+			} else {
+				_showError(req, res, response.statusCode);
+			}
+		}
+	);
+};
+
+
 
 module.exports.homelist = function (req, res) {
 	var requestOptions, path;
@@ -27,14 +118,21 @@ module.exports.homelist = function (req, res) {
 		method : get,
 		json: {},
 		qs: {
-			lng: -0.7992599,
-			lat: 51.378091,
+			lng: 1,
+			lat: 1,
 			maxDistance: 20
 		}
 	};
 	request(
 		requestOptions,
 		function (err, response, body) {
+			var i, data;
+			data = body;
+			if (response.statusCode === 200 && data.length) {
+				for (var i = 0; i < body.length; i++) {
+					data[i].distance = _formatDistance(data[i].distance);
+				}
+			}
 			if (err) {
 				console.log(err);
 			}else if (response.statusCode === 200) {
@@ -42,57 +140,49 @@ module.exports.homelist = function (req, res) {
 			}else{
 				console.log(response.statusCode);
 			}
-			renderHomepage(req, res, body)
+			renderHomepage(req, res, data);
 		});
 };
 
 
-
-/* home list page */
-module.exports.homelist = function (req, res) {
-	res.render('locations-list', {
-		title: 'Home',
-		pageHeader: {
-			title: 'Quicksite',
-			strapline: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus, saepe voluptatem architecto possimus odit perspiciatis asperiores modi iusto. In repudiandae soluta quae est delectus quidem tempora sunt voluptatum, at rerum.'
-		},
-		sidebar: "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for.",
-		locations: [{
-			name: 'Quicksite1',
-			address: '125 High Street, Reading, RG6 1PS',
-			rating: 1,
-			facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-			distance: '100m'
-		},{
-			name: 'Quicksite2',
-			address: '123 High Street, Reading, RG6 1PS',
-			rating: 3,
-			facilities: ['Hot drinks', 'Food', 'Premium wifi', 'Premium wifi'],
-			distance: '200m'
-		},{
-			name: 'Quicksite3',
-			address: '128 High Street, Reading, RG6 1PS',
-			rating: 2,
-			facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-			distance: '300m'
-		},{
-			name: 'Quicksite4',
-			address: '122 High Street, Reading, RG6 1PS',
-			rating: 5,
-			facilities: ['Hot drinks', 'Premium wifi'],
-			distance: '100m'
-		}]
-	});
-};
-
 /* location Info */
 module.exports.locationInfo = function (req, res) {
-	res.render('locations-info', {title: 'Location Info'});
+	getLocationInfo(req, res, function (req, res, responseData) {
+		renderDetailPage(req, res, responseData);
+	});
 };
 
 /* review info */
 module.exports.addView = function (req, res) {
-	res.render('location-review-form', {title: 'Add View'});
+	getLocationInfo(req, res, function (req, res, responseData) {
+		renderrReviewForm(req, res, responseData);
+	});
+};
+
+module.exports.doAddView = function (req, res) {
+	var requestOptions, path, locationsid, postdata;
+	locationsid = req.params.locationsid;
+	path = '/api/locations/' + locationsid + 'review';
+	postdata = {
+		author: req.body.name,
+		rating: parseInt(req.body.rating, 10),
+		reviewText: req.body.review
+	};
+	requestOptions = {
+		url: apioptions.server + path,
+		method: "POST",
+		json: postdata
+	};
+	request{
+		requestOptions,
+		function (err, response, body) {
+			if (response.statusCode === 201) {
+				res.redirect('/location/' + locationsid)
+			} else {
+				_showError(req, res, response.statusCode);
+			}
+		}
+	}
 };
 
 module.exports.homelist = function (req, res) {

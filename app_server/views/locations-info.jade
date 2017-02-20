@@ -55,7 +55,8 @@ block content
 												span.glyphicon.glyphicon-star
 												span.glyphicon.glyphicon-star
 											span.reviewAuthor Simon Holmes
-											small.reviewTimestamp 16 July 2013
+											small.reviewTimestamp 
+												+ formatDate(review.creatOn)
 					.col-xs-12
 						.row
 							.review
@@ -67,7 +68,8 @@ block content
 										span.glyphicon.glyphicon-star-empty
 										span.glyphicon.glyphicon-star-empty
 									span.reviewAuthor Charlie Chaplin
-									small.reviewTimestamp 16 June 2013
+									small.reviewTimestamp 
+										+ formatDate(review.creatOn)
 					.col-xs-12
 						p It was okay. Coffee wasn't great, but the wifi was fast.
 			.col-xs-12.col-md-3
