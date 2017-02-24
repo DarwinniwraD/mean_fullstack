@@ -28,7 +28,7 @@ var _showError = function (req, res, status) {
 	} else {
 		title = status + ", something goes wrong";
 		content = "Someting, somewhere has gone just a litter bit wrong"
-	}
+	};
 	res.status(status);
 	res.render('generic-text', {
 		title: title,
@@ -41,11 +41,8 @@ var renderHomepage = function (req, res, responseBody) {
 	if (!responseBody instanceof Array) {
 		message = "API look up error";
 		responseBody = [];
-	} else if{
-		if (!responseBody.length) {
+	} else if (!responseBody.length)
 			message = "No place was found";
-		};
-	}
 	res.render('locations-list', {
 		title: "Quicksite",
 		sidebar: "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for.",
@@ -58,7 +55,7 @@ var renderHomepage = function (req, res, responseBody) {
 	});
 };
 
-var renderDetailPage = function (req, res, locDetail) {
+var	renderDetailPage = function (req, res, locDetail) {
 	res.render('location-info', {
 		title: locDetail.name,
 		pageHeader: {title: locDetail.name},
@@ -70,20 +67,21 @@ var renderDetailPage = function (req, res, locDetail) {
 	});
 };
 
-var renderrReviewForm = function (req, res, locDetail) {
+var	renderReviewForm = function (req, res, locDetail) {
 	res.render('location-review-form', {
 		title: 'Review ' + locDetail.name + 'on quicksite',
-		pageHeader: {title: 'Review ' + locDetail.name}
+		pageHeader: {title: 'Review ' + locDetail.name},
+		error: req.query.err
 	});
 };
 
-var postdata = {
-	author: req.body.name,
-	rating: parseInt(req.body.rating, 10),
-	reviewText: req.body.review
-};
+// var	postdata = {
+// 	author: req.body.name,
+// 	rating: parseInt(req.body.rating, 10),
+// 	reviewText: req.body.review
+// };
 
-var getLocationInfo = function (req, res, callback) {
+var	getLocationInfo = function (req, res, callback) {
 	var requestOptions, path;
 	path = "/api/locations" + req.params.locationsid;
 	requestOptions = {
@@ -155,7 +153,7 @@ module.exports.locationInfo = function (req, res) {
 /* review info */
 module.exports.addView = function (req, res) {
 	getLocationInfo(req, res, function (req, res, responseData) {
-		renderrReviewForm(req, res, responseData);
+		renderReviewForm(req, res, responseData);
 	});
 };
 
@@ -173,15 +171,22 @@ module.exports.doAddView = function (req, res) {
 		method: "POST",
 		json: postdata
 	};
-	request{
-		requestOptions,
-		function (err, response, body) {
-			if (response.statusCode === 201) {
-				res.redirect('/location/' + locationsid)
-			} else {
-				_showError(req, res, response.statusCode);
+	if (!postdata.author || !postdata.rating || !postdata.reviewText) {
+		res.render('/location/' + locationsid + '/review/new?err=val');
+	} else {
+		request(
+			requestOptions,
+			function (err, response, body) {
+				if (response.statusCode === 201) {
+					res.redirect('/location/' + locationsid)
+				} else if (response.statusCode === 400 && body.name && body.name === "ValidationError") {
+					res.redirect('/location/' + locationsid + '/review/new?err=val');
+				} else {
+					console.log(body);
+					_showError(req, res, response.statusCode);
+				}
 			}
-		}
+		)
 	}
 };
 

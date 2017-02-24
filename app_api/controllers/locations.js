@@ -25,26 +25,44 @@ var theEarth = (function () {
 /* create a new location*/
 /* api/locations */
 module.exports.locationsCreate = function (req, res) {
+  console.log(req.body);
   Loc.create({
-      name: req.body.name,
-      address: req.body.address,
-      facilities: req.body.facilities,
-      coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
+      // name: req.body.name,
+      // address: req.body.address,
+      // facilities: req.body.facilities,
+      // coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
+      // openingTimes: [{
+      //   days: req.body.day1,
+      //   opening: req.body.opening1,
+      //   closing: req.body.closing1,
+      //   closed: req.body.closed1
+      // },{
+      //   days: req.body.day2,
+      //   opening: req.body.opening2,
+      //   closing: req.body.closing2,
+      //   closed: req.body.closed2
+      // }]
+      name: "test",
+      address: "Losagles, CA",
+      facilities: ["wifi", "sport", "drincks"],
+      coords: [17.2344343, 90.909912],
       openingTimes: [{
-        days: req.body.day1,
-        opening: req.body.opening1,
-        closing: req.body.closing1,
-        closed: req.body.closed1
+        days: "Monday",
+        opening: "5:00am",
+        closing: "5:00pm",
+        closed: true
       },{
-        days: req.body.day2,
-        opening: req.body.opening2,
-        closing: req.body.closing2,
-        closed: req.body.closed2
+        days: "Sunday",
+        opening: "10:00am",
+        closing: "10:00pm",
+        closed: true
       }]
     },function (err, location) {
       if (err) {
+        console.log(err);
         sendJsonResponse(res, 404, err);
       } else {
+        console.log(location);
         sendJsonResponse(res, 201, location)
       }
     }
@@ -54,7 +72,7 @@ module.exports.locationsCreate = function (req, res) {
 /* get a location from db*/
 module.exports.locationsReadOne = function (req, res) {
   if (req.params && req.params.locationsid) {
-    Loc.fingById(req.params.locationsid)
+    Loc.findById(req.params.locationsid)
     .exec(function (err, location) {
       if (!location) {
         sendJsonResponse(res, 404, {"message": "locationid is not found"});
@@ -166,4 +184,29 @@ module.exports.locationsDeleteOne = function (req, res) {
     })
   }
 };
+
+module.exports.import = function (req, res) {
+  Loc.create(
+    name: "test",
+    address: "Losagles, CA",
+    facilities: ["wifi", "sport", "drincks"],
+    coords: [17.2344343, 90.909912],
+    openingTimes: [{
+      days: "Monday",
+      opening: "5:00am",
+      closing: "5:00pm",
+      closed: true
+    },{
+      days: "Sunday",
+      opening: "10:00am",
+      closing: "10:00pm",
+      closed: true
+    }],
+  ), function (err) {
+    if (err) {
+      return console.log(err)
+    };
+    return res.send(202);
+  }
+}
 
