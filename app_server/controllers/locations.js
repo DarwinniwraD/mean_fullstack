@@ -41,8 +41,9 @@ var renderHomepage = function (req, res, responseBody) {
 	if (!responseBody instanceof Array) {
 		message = "API look up error";
 		responseBody = [];
-	} else if (!responseBody.length)
+	} else if (!responseBody.length){
 			message = "No place was found";
+	}
 	res.render('locations-list', {
 		title: "Quicksite",
 		sidebar: "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for.",
@@ -56,7 +57,7 @@ var renderHomepage = function (req, res, responseBody) {
 };
 
 var	renderDetailPage = function (req, res, locDetail) {
-	res.render('location-info', {
+	res.render('locations-info', {
 		title: locDetail.name,
 		pageHeader: {title: locDetail.name},
 		sidebar: {
@@ -83,7 +84,7 @@ var	renderReviewForm = function (req, res, locDetail) {
 
 var	getLocationInfo = function (req, res, callback) {
 	var requestOptions, path;
-	path = "/api/locations" + req.params.locationsid;
+	path = "/api/locations/" + req.params.locationsid;
 	requestOptions = {
 		url: apioptions.server + path,
 		method: "GET",
@@ -94,14 +95,15 @@ var	getLocationInfo = function (req, res, callback) {
 		function (err, response, body) {
 			var data = body;
 			if (response.statusCode === 200) {
-				data.coords ={
-					lng: body.coords[0],
-					lat: body.coords[1]
-				};
+				// data.coords ={
+				// 	lng: body.coords[0],
+				// 	lat: body.coords[1]
+				// };
 				callback(req, res, data);
-			} else {
-				_showError(req, res, response.statusCode);
 			}
+			//  else {
+			// 	_showError(req, res, response.statusCode);
+			// }
 		}
 	);
 };
@@ -113,7 +115,7 @@ module.exports.homelist = function (req, res) {
 	path = '/api/locations';
 	requestOptions = {
 		url : apioptions.server + path,
-		method : get,
+		method : "GET",
 		json: {},
 		qs: {
 			lng: 1,
@@ -190,6 +192,6 @@ module.exports.doAddView = function (req, res) {
 	}
 };
 
-module.exports.homelist = function (req, res) {
-	renderHomepage(req, res);
-}
+// module.exports.homelist = function (req, res) {
+// 	renderHomepage(req, res);
+// }

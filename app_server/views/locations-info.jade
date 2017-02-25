@@ -3,7 +3,7 @@ extends layout
 block content
 	.row.pageheader
 		.col-lg-12
-			h1 lorem
+			h1= location.name
 		.row
 			.col-xs-12.col-md-9
 				.row
@@ -14,7 +14,7 @@ block content
 							span.glyphicon.glyphicon-star
 							span.glyphicon.glyphicon-star-empty
 							span.glyphicon.glyphicon-star-empty
-						p 125 high street, CA
+						p= location.address
 						.panel.panel-primary
 							.panel-heading
 								h2.panel-title opening hours
@@ -26,12 +26,9 @@ block content
 							.panel-heading
 								h2.panel-title Facilities
 							.panel-body
-								span.label.label-warning
-									span.glyphicon.glyphicon-ok | &nbsp;Hot drinks | &nbsp;
-								span.label.label-warning
-									span.glyphicon.glyphicon-ok | &nbsp;Food | &nbsp;
-								span.label.label-warning
-									span.glyphicon.glyphicon-ok | &nbsp;Premium wifi | &nbsp;
+								each facility in location.facilities
+									span.label.label-warning
+										span.glyphicon.glyphicon-ok | &nbsp; facility | &nbsp;
 					.col-xs-12.col-sm-6.location-map
 						.panel.panel-primary
 							.panel-heading
@@ -39,37 +36,38 @@ block content
 							.panel-body
 								img.img-responsive.img-rounded(src='http://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x350&sensor=false&markers=51.455041,-0.9690884&scale=2')
 				.row
-					.col-xs-12
-						.panel.panel-primary.review-panel
-							.panel-heading
-								a.btn.btn-default.pull-right(href='/location/review/new') Add review
-								h2.panel-title Customer reviews
-							.panel-body.review-container
-								.row
-									.review
-										.well.well-sm.review-header
-											span.rating
-												span.glyphicon.glyphicon-star
-												span.glyphicon.glyphicon-star
-												span.glyphicon.glyphicon-star
-												span.glyphicon.glyphicon-star
-												span.glyphicon.glyphicon-star
-											span.reviewAuthor Simon Holmes
-											small.reviewTimestamp 
-												+ formatDate(review.creatOn)
-					.col-xs-12
-						.row
-							.review
-								.well.well-sm.review-header
-									span.rating
-										span.glyphicon.glyphicon-star
-										span.glyphicon.glyphicon-star
-										span.glyphicon.glyphicon-star
-										span.glyphicon.glyphicon-star-empty
-										span.glyphicon.glyphicon-star-empty
-									span.reviewAuthor Charlie Chaplin
-									small.reviewTimestamp 
-										+ formatDate(review.creatOn)
+					//- .col-xs-12
+					//- 	.panel.panel-primary.review-panel
+					//- 		.panel-heading
+					//- 			a.btn.btn-default.pull-right(href='/#{location._id}/review/new') Add review
+					//- 			h2.panel-title Customer reviews
+					//- 		.panel-body.review-container
+					//- 			.row
+					//- 				.review
+					//- 					.well.well-sm.review-header
+					//- 						span.rating
+					//- 							span.glyphicon.glyphicon-star
+					//- 							span.glyphicon.glyphicon-star
+					//- 							span.glyphicon.glyphicon-star
+					//- 							span.glyphicon.glyphicon-star
+					//- 							span.glyphicon.glyphicon-star
+					//- 						span.reviewAuthor Simon Holmes
+					//- 						small.reviewTimestamp 
+					//- 							+ formatDate(review.creatOn)
+					each review in location.reviews
+						.col-xs-12
+							.row
+								.review
+									.well.well-sm.review-header
+										span.rating
+											span.glyphicon.glyphicon-star
+											span.glyphicon.glyphicon-star
+											span.glyphicon.glyphicon-star
+											span.glyphicon.glyphicon-star-empty
+											span.glyphicon.glyphicon-star-empty
+										span.reviewAuthor= review.author
+										small.reviewTimestamp 
+											+ formatDate(review.creatOn)
 					.col-xs-12
 						p It was okay. Coffee wasn't great, but the wifi was fast.
 			.col-xs-12.col-md-3

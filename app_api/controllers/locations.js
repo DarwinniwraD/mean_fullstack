@@ -21,31 +21,15 @@ var theEarth = (function () {
 })();
 
 
-
 /* create a new location*/
 /* api/locations */
 module.exports.locationsCreate = function (req, res) {
   console.log(req.body);
   Loc.create({
-      // name: req.body.name,
-      // address: req.body.address,
-      // facilities: req.body.facilities,
-      // coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
-      // openingTimes: [{
-      //   days: req.body.day1,
-      //   opening: req.body.opening1,
-      //   closing: req.body.closing1,
-      //   closed: req.body.closed1
-      // },{
-      //   days: req.body.day2,
-      //   opening: req.body.opening2,
-      //   closing: req.body.closing2,
-      //   closed: req.body.closed2
-      // }]
       name: "test",
       address: "Losagles, CA",
-      facilities: ["wifi", "sport", "drincks"],
-      coords: [17.2344343, 90.909912],
+      facilities: ["wifi", "sport", "drinks"],
+      coords: [121.436249,31.252834],
       openingTimes: [{
         days: "Monday",
         opening: "5:00am",
@@ -56,7 +40,8 @@ module.exports.locationsCreate = function (req, res) {
         opening: "10:00am",
         closing: "10:00pm",
         closed: true
-      }]
+      }],
+      rating: 1
     },function (err, location) {
       if (err) {
         console.log(err);
@@ -107,7 +92,7 @@ module.exports.locationsUpdateOne = function (req, res) {
       };
       location.name = req.body.name;
       location.address = req.body.address;
-      location.facilities = req.body.facilities;
+      location.facilities = req.body.facilities.split(",");
       location.coords = [parseInt(req.body.lng), parseInt(req.body.lat)];
       openingTimes: [{
         days: req.body.day1,
@@ -132,38 +117,44 @@ module.exports.locationsUpdateOne = function (req, res) {
 
 /* get the list of locations */
 module.exports.locationsListByDistance = function (req, res) {
-  var lng = parseFloat(params.query.lng);
-  var lat = parseFloat(params.query.lat);
-  var point = {
-    type: "Point",
-    coordinates: [lng, lat]
-  };
-  var geoOptions = {
-    spherical: true,
-    maxDistance: theEarth.getRadsFromDistance(20),
-    num: 10
-  };
-  if (!lng || !lat) {
-    sendJsonResponse(res, 404, {"message": "lng and lat query params are required"});
-    return;
-  }
-  Loc.geoNear(point, options, function(err, results, stats) {
-    var locations = [];
+  // var lng = parseFloat(params.query.lng);
+  // var lat = parseFloat(params.query.lat);
+  // var point = {
+  //   type: "Point",
+  //   coordinates: [lng, lat]
+  // };
+  // var geoOptions = {
+  //   spherical: true,
+  //   maxDistance: theEarth.getRadsFromDistance(20),
+  //   num: 10
+  // };
+  // if (!lng || !lat) {
+  //   sendJsonResponse(res, 404, {"message": "lng and lat query params are required"});
+  //   return;
+  // }
+  // Loc.geoNear(point, options, function(err, results, stats) {
+  //   var locations = [];
+  //   if (err) {
+  //     sendJsonResponse(res, 404, err)
+  //   } else {
+  //     results.forEach(function(doc) {
+  //         locations.push({
+  //             distance: theEarth.getDistanceFromRads(doc.dis),
+  //             name: doc.obj.name,
+  //             address: doc.obj.address,
+  //             rating: doc.obj.rating,
+  //             facilities: doc.obj.facilities,
+  //             _id: doc.obj._id
+  //         });
+  //     });
+  //     sendJsonResponse(res, 200, locations);
+  //   }
+  // });
+  Loc.find(function (err, location) {
     if (err) {
       sendJsonResponse(res, 404, err)
-    } else {
-      results.forEach(function(doc) {
-          locations.push({
-              distance: theEarth.getDistanceFromRads(doc.dis),
-              name: doc.obj.name,
-              address: doc.obj.address,
-              rating: doc.obj.rating,
-              facilities: doc.obj.facilities,
-              _id: doc.obj._id
-          });
-      });
-      sendJsonResponse(res, 200, locations);
-    }
+    };
+    sendJsonResponse(res, 200, location);
   });
 }
 
@@ -171,7 +162,7 @@ module.exports.locationsListByDistance = function (req, res) {
 module.exports.locationsDeleteOne = function (req, res) {
   var locationsid = req.params.locationsid;
   if (locationsid) {
-    Loc.findByIdRemove(locationsid)
+    Loc.findById(locationsid).remove()
       .exec(function (err, location) {
         if (err) {
           sendJsonResponse(res, 404, err)
@@ -184,29 +175,4 @@ module.exports.locationsDeleteOne = function (req, res) {
     })
   }
 };
-
-module.exports.import = function (req, res) {
-  Loc.create(
-    name: "test",
-    address: "Losagles, CA",
-    facilities: ["wifi", "sport", "drincks"],
-    coords: [17.2344343, 90.909912],
-    openingTimes: [{
-      days: "Monday",
-      opening: "5:00am",
-      closing: "5:00pm",
-      closed: true
-    },{
-      days: "Sunday",
-      opening: "10:00am",
-      closing: "10:00pm",
-      closed: true
-    }],
-  ), function (err) {
-    if (err) {
-      return console.log(err)
-    };
-    return res.send(202);
-  }
-}
 

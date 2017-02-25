@@ -1,27 +1,27 @@
 var mongoose = require('mongoose');
 
 var openingTimeSchema = new mongoose.Schema({
-	days: {type: String, required: true},
+	days: String,
 	opening: String,
 	closing: String,
-	closed: {type: Boolean, required: true}
+	closed: Boolean
 });
 
 var reviewSchema = new mongoose.Schema({
-	author: {type: String, required: true},
-	rating: {type: Number, "default": 0, min: 0, max: 5, required: true},
-	reviewText: {type: String, required: true},
+	author: String,
+	rating: {type: Number, "default": 0, min: 0, max: 5},
+	reviewText: String,
 	creatOn: {type: Date, "default": Date.now}
 });
 
 var locationSchema = new mongoose.Schema({
-	name: {type: String, required: true},
+	name: String,
 	address: String,
 	rating: {type: Number, "default": 0, min: 0, max: 5},
-	facilities: String,
+	facilities: [String],
 	distance: {type:[Number], index: '2dsphere'},
 	openingTimes: [openingTimeSchema],
 	reviews: [reviewSchema]
 });
 
-mongoose.model('Location', locationSchema);
+module.exports = mongoose.model('Location', locationSchema);
