@@ -19,22 +19,22 @@ block content
 							.panel-heading
 								h2.panel-title opening hours
 							.panel-body
-								p Monday - Friday : 7:00am - 7:00pm
-								p Saturday : 8:00am - 5:00pm
-								p Sunday : closed
+								each openingTime in location.openingTimes
+									p #{openingTime.days}:#{openingTime.opening}-#{openingTime.closing}
 						.panel.panel-primary
 							.panel-heading
 								h2.panel-title Facilities
 							.panel-body
 								each facility in location.facilities
 									span.label.label-warning
-										span.glyphicon.glyphicon-ok | &nbsp; facility | &nbsp;
+										span.glyphicon.glyphicon-ok |&nbsp;#{facility}
+									&nbsp;
 					.col-xs-12.col-sm-6.location-map
 						.panel.panel-primary
 							.panel-heading
-								h2.panel-title Location map
+								h2.panel-title Location map  
 							.panel-body
-								img.img-responsive.img-rounded(src='http://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x350&sensor=false&markers=51.455041,-0.9690884&scale=2')
+								img.img-responsive.img-rounded(src='https://maps.googleapis.com/maps/api/staticmap?center=#{location.coords[1]},#{location.coords[0]}&zoom=9&&size=400x300')
 				.row
 					//- .col-xs-12
 					//- 	.panel.panel-primary.review-panel
@@ -67,7 +67,7 @@ block content
 											span.glyphicon.glyphicon-star-empty
 										span.reviewAuthor= review.author
 										small.reviewTimestamp 
-											+ formatDate(review.creatOn)
+											//- + formatDate(review.creatOn)
 					.col-xs-12
 						p It was okay. Coffee wasn't great, but the wifi was fast.
 			.col-xs-12.col-md-3

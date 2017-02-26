@@ -95,7 +95,7 @@ var	getLocationInfo = function (req, res, callback) {
 		function (err, response, body) {
 			var data = body;
 			if (response.statusCode === 200) {
-				// data.coords ={
+				// data.coords = {
 				// 	lng: body.coords[0],
 				// 	lat: body.coords[1]
 				// };

@@ -26,22 +26,22 @@ var theEarth = (function () {
 module.exports.locationsCreate = function (req, res) {
   console.log(req.body);
   Loc.create({
-      name: "test",
-      address: "Losagles, CA",
-      facilities: ["wifi", "sport", "drinks"],
-      coords: [121.436249,31.252834],
+      name: req.body.name,
+      address: req.body.address,
+      facilities: req.body.facilities.split(","),
+      coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
       openingTimes: [{
-        days: "Monday",
-        opening: "5:00am",
-        closing: "5:00pm",
-        closed: true
+        days: req.body.day1,
+        opening: req.body.opening1,
+        closing: req.body.closing1,
+        closed: req.body.closed1
       },{
-        days: "Sunday",
-        opening: "10:00am",
-        closing: "10:00pm",
-        closed: true
+        days: req.body.day2,
+        opening: req.body.opening2,
+        closing: req.body.closing2,
+        closed: req.body.closed2
       }],
-      rating: 1
+      rating: req.body.rating
     },function (err, location) {
       if (err) {
         console.log(err);
@@ -53,6 +53,36 @@ module.exports.locationsCreate = function (req, res) {
     }
   );
 };
+// module.exports.locationsCreate = function (req, res) {
+//   console.log(req.body);
+//   Loc.create({
+//       name: "test",
+//       address: "Losagles, CA",
+//       facilities: ["wifi", "sport", "drinks"],
+//       coords: [121.436249,31.252834],
+//       openingTimes: [{
+//         days: "Monday",
+//         opening: "5:00am",
+//         closing: "5:00pm",
+//         closed: true
+//       },{
+//         days: "Sunday",
+//         opening: "10:00am",
+//         closing: "10:00pm",
+//         closed: true
+//       }],
+//       rating: 1
+//     },function (err, location) {
+//       if (err) {
+//         console.log(err);
+//         sendJsonResponse(res, 404, err);
+//       } else {
+//         console.log(location);
+//         sendJsonResponse(res, 201, location)
+//       }
+//     }
+//   );
+// };
 
 /* get a location from db*/
 module.exports.locationsReadOne = function (req, res) {
@@ -117,8 +147,8 @@ module.exports.locationsUpdateOne = function (req, res) {
 
 /* get the list of locations */
 module.exports.locationsListByDistance = function (req, res) {
-  // var lng = parseFloat(params.query.lng);
-  // var lat = parseFloat(params.query.lat);
+  // var lng = parseFloat(req.query.lng);
+  // var lat = parseFloat(req.query.lat);
   // var point = {
   //   type: "Point",
   //   coordinates: [lng, lat]
@@ -129,7 +159,7 @@ module.exports.locationsListByDistance = function (req, res) {
   //   num: 10
   // };
   // if (!lng || !lat) {
-  //   sendJsonResponse(res, 404, {"message": "lng and lat query params are required"});
+  //   sendJsonResponse(res, 404, {"message": "lng and lat query params are required" });
   //   return;
   // }
   // Loc.geoNear(point, options, function(err, results, stats) {
