@@ -95,15 +95,15 @@ var	getLocationInfo = function (req, res, callback) {
 		function (err, response, body) {
 			var data = body;
 			if (response.statusCode === 200) {
-				// data.coords = {
-				// 	lng: body.coords[0],
-				// 	lat: body.coords[1]
-				// };
+				data.coords = {
+					lng: body.coords[0],
+					lat: body.coords[1]
+				};
 				callback(req, res, data);
 			}
-			//  else {
-			// 	_showError(req, res, response.statusCode);
-			// }
+			 else {
+				_showError(req, res, response.statusCode);
+			}
 		}
 	);
 };
@@ -118,9 +118,9 @@ module.exports.homelist = function (req, res) {
 		method : "GET",
 		json: {},
 		qs: {
-			lng: 1,
-			lat: 1,
-			maxDistance: 20
+			lng: 121.469113,
+			lat: 31.21669,
+			maxDistance: 90000000000000
 		}
 	};
 	request(
