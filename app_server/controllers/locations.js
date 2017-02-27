@@ -76,11 +76,7 @@ var	renderReviewForm = function (req, res, locDetail) {
 	});
 };
 
-// var	postdata = {
-// 	author: req.body.name,
-// 	rating: parseInt(req.body.rating, 10),
-// 	reviewText: req.body.review
-// };
+
 
 var	getLocationInfo = function (req, res, callback) {
 	var requestOptions, path;
@@ -162,7 +158,7 @@ module.exports.addView = function (req, res) {
 module.exports.doAddView = function (req, res) {
 	var requestOptions, path, locationsid, postdata;
 	locationsid = req.params.locationsid;
-	path = '/api/locations/' + locationsid + 'review';
+	path = '/api/locations/' + locationsid + '/reviews';
 	postdata = {
 		author: req.body.name,
 		rating: parseInt(req.body.rating, 10),
@@ -174,7 +170,7 @@ module.exports.doAddView = function (req, res) {
 		json: postdata
 	};
 	if (!postdata.author || !postdata.rating || !postdata.reviewText) {
-		res.render('/location/' + locationsid + '/review/new?err=val');
+		res.redirect('/location/' + locationsid + '/review/new/?err=val');
 	} else {
 		request(
 			requestOptions,
@@ -182,7 +178,7 @@ module.exports.doAddView = function (req, res) {
 				if (response.statusCode === 201) {
 					res.redirect('/location/' + locationsid)
 				} else if (response.statusCode === 400 && body.name && body.name === "ValidationError") {
-					res.redirect('/location/' + locationsid + '/review/new?err=val');
+					res.redirect('/location/' + locationsid + '/review/new/?err=val');
 				} else {
 					console.log(body);
 					_showError(req, res, response.statusCode);
