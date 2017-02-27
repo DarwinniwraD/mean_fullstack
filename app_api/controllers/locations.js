@@ -123,7 +123,7 @@ module.exports.locationsUpdateOne = function (req, res) {
       location.name = req.body.name;
       location.address = req.body.address;
       location.facilities = req.body.facilities.split(",");
-      location.coords = [parseInt(req.body.lng), parseInt(req.body.lat)];
+      location.coords = [parseFloat(req.body.lng), parseFloat(req.body.lat)];
       openingTimes: [{
         days: req.body.day1,
         opening: req.body.opening1,
@@ -161,7 +161,7 @@ module.exports.locationsListByDistance = function (req, res) {
     distanceMultiplier : 0.001,
   };
   if (!lng || !lat || !maxDistance) {
-    sendJsonResponse(res, 404, {"message": "lng and lat query params are required" });
+    sendJsonResponse(res, 404, {"message": "lng, lat and maxDistance query params are required" });
     return;
   }
   Loc.geoNear(point, geoOptions, function(err, results, stats) {
@@ -172,6 +172,7 @@ module.exports.locationsListByDistance = function (req, res) {
       results.forEach(function(doc) {
           locations.push({
               distance: theEarth.getDistanceFromRads(doc.dis),
+              coords: doc.obj.coords,
               name: doc.obj.name,
               address: doc.obj.address,
               rating: doc.obj.rating,

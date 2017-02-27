@@ -30,9 +30,9 @@ block content
 					.col-xs-12.col-sm-6.location-map
 						.panel.panel-primary
 							.panel-heading
-								h2.panel-title Location map  
+								h2.panel-title Location map  #{location.coords[1]}#{location.coords[0]}
 							.panel-body
-								img.img-responsive.img-rounded(src='https://maps.googleapis.com/maps/api/staticmap?center=#{location.coords[1]},#{location.coords[0]}&zoom=9&&size=400x300')
+								img.img-responsive.img-rounded(src='https://maps.googleapis.com/maps/api/staticmap?center=#{location.coords[0]},#{location.coords[1]}&zoom=9&&size=400x300')
 				.row
 					each review in location.reviews
 						.col-xs-12
