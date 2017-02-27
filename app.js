@@ -5,7 +5,12 @@
 // var cookieParser = require('cookie-parser');
 // var bodyParser = require('body-parser');
 
+<<<<<<< HEAD
 // require('./app_api/models/db');
+=======
+
+require('./app_api/models/db');
+>>>>>>> 41fe1c0401b8acb1cb398a1782d5df1bf0eb5d36
 
 <<<<<<< HEAD
 // var routes = require('./app_server/routes/index');
