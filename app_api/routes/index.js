@@ -3,6 +3,14 @@
 // var ctrlLocations = require('../controllers/locations');
 // var ctrlReviews = require('../controllers/reviews');
 
+<<<<<<< HEAD
+=======
+router.get('/locations', ctrlLocations.locationsListByDistance);
+router.post('/locations', ctrlLocations.locationsCreate);
+router.get('/locations/:locationsid', ctrlLocations.locationsReadOne);
+router.put('/locations/:locationsid', ctrlLocations.locationsUpdateOne);
+router.delete('/locations/:locationsid', ctrlLocations.locationsDeleteOne);
+>>>>>>> 6eb733d0b112988aa933b84a6100ddfd28c40a07
 
 // router.get('/locations', ctrlLocations.locationsListByDistance);
 // router.post('/locations', ctrlLocations.locationsCreate);

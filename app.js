@@ -7,9 +7,14 @@
 
 // require('./app_api/models/db');
 
+<<<<<<< HEAD
 // var routes = require('./app_server/routes/index');
 // var routeApi = require('./app_api/routes/index')
 // // var users = require('./app_server/routes/users');
+=======
+var routes = require('./app_server/routes/index');
+var routeApi = require('./app_api/routes/index');
+>>>>>>> 6eb733d0b112988aa933b84a6100ddfd28c40a07
 
 // var app = express();
 

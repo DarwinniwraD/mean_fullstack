@@ -1,77 +1,51 @@
 extends layout
 
+include _includes/sharedHtmlFunctions
+
 block content
 	.row.pageheader
 		.col-lg-12
-			h1 lorem
+			h1= location.name
 		.row
 			.col-xs-12.col-md-9
 				.row
 					.col-xs-12.col-sm-6
 						p.rating
-							span.glyphicon.glyphicon-star
-							span.glyphicon.glyphicon-star
-							span.glyphicon.glyphicon-star
-							span.glyphicon.glyphicon-star-empty
-							span.glyphicon.glyphicon-star-empty
-						p 125 high street, CA
+							+outputRating(location.rating)
+						p= location.address
 						.panel.panel-primary
 							.panel-heading
 								h2.panel-title opening hours
 							.panel-body
-								p Monday - Friday : 7:00am - 7:00pm
-								p Saturday : 8:00am - 5:00pm
-								p Sunday : closed
+								each openingTime in location.openingTimes
+									p #{openingTime.days}:#{openingTime.opening}-#{openingTime.closing}
 						.panel.panel-primary
 							.panel-heading
 								h2.panel-title Facilities
 							.panel-body
-								span.label.label-warning
-									span.glyphicon.glyphicon-ok | &nbsp;Hot drinks | &nbsp;
-								span.label.label-warning
-									span.glyphicon.glyphicon-ok | &nbsp;Food | &nbsp;
-								span.label.label-warning
-									span.glyphicon.glyphicon-ok | &nbsp;Premium wifi | &nbsp;
+								each facility in location.facilities
+									span.label.label-warning
+										span.glyphicon.glyphicon-ok |&nbsp;#{facility}
+									&nbsp;
 					.col-xs-12.col-sm-6.location-map
 						.panel.panel-primary
 							.panel-heading
-								h2.panel-title Location map
+								h2.panel-title Location map  
 							.panel-body
-								img.img-responsive.img-rounded(src='http://maps.googleapis.com/maps/api/staticmap?center=51.455041,-0.9690884&zoom=17&size=400x350&sensor=false&markers=51.455041,-0.9690884&scale=2')
+								img.img-responsive.img-rounded(src='https://maps.googleapis.com/maps/api/staticmap?center=#{location.coords[1]},#{location.coords[0]}&zoom=9&&size=400x300')
 				.row
-					.col-xs-12
-						.panel.panel-primary.review-panel
-							.panel-heading
-								a.btn.btn-default.pull-right(href='/location/review/new') Add review
-								h2.panel-title Customer reviews
-							.panel-body.review-container
-								.row
-									.review
-										.well.well-sm.review-header
-											span.rating
-												span.glyphicon.glyphicon-star
-												span.glyphicon.glyphicon-star
-												span.glyphicon.glyphicon-star
-												span.glyphicon.glyphicon-star
-												span.glyphicon.glyphicon-star
-											span.reviewAuthor Simon Holmes
-											small.reviewTimestamp 
-												+ formatDate(review.creatOn)
-					.col-xs-12
-						.row
-							.review
-								.well.well-sm.review-header
-									span.rating
-										span.glyphicon.glyphicon-star
-										span.glyphicon.glyphicon-star
-										span.glyphicon.glyphicon-star
-										span.glyphicon.glyphicon-star-empty
-										span.glyphicon.glyphicon-star-empty
-									span.reviewAuthor Charlie Chaplin
-									small.reviewTimestamp 
-										+ formatDate(review.creatOn)
-					.col-xs-12
-						p It was okay. Coffee wasn't great, but the wifi was fast.
+					each review in location.reviews
+						.col-xs-12
+							.row
+								.review
+									.well.well-sm.review-header
+										span.rating
+											+outputRating(review.rating)
+										span.reviewAuthor= review.author
+										small.reviewTimestamp 
+											+formatDate(review.creatOn)
+						.col-xs-12
+							p= review.reviewText
 			.col-xs-12.col-md-3
-				p.lead Simon's cafe is on Loc8r because it has accessible wifi and space to sit down with your laptop and get some work done.
-				p If you've been and you like it - or if you don't - please leave a review to help other people just like you.
+				p.lead= sidebar.context
+				p= sidebar.callToAction
