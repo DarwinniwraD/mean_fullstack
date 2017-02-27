@@ -1,5 +1,5 @@
 doctype html
-html
+html(ng-app='quicksite')
 	head
 	meta(name='viewport', content='width=device-width, initial-scale=1.0')
 	title= title
@@ -26,6 +26,8 @@ html
 			.row
 				.col-sx-12
 					small &copy; 2017
+	script(src='/angular/angular.min.js')
+	script(src='/angular/quicksite.js')
 	script(src='/javascripts/jquery-1.12.4.js')
 	script(src='/bootstrap/js/bootstrap.min.js')
 	script(src='/javascripts/validation.js')
