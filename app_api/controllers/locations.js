@@ -53,36 +53,36 @@ module.exports.locationsCreate = function (req, res) {
     }
   );
 };
-// module.exports.locationsCreate = function (req, res) {
-//   console.log(req.body);
-//   Loc.create({
-//       name: "test",
-//       address: "Losagles, CA",
-//       facilities: ["wifi", "sport", "drinks"],
-//       coords: [121.436249,31.252834],
-//       openingTimes: [{
-//         days: "Monday",
-//         opening: "5:00am",
-//         closing: "5:00pm",
-//         closed: true
-//       },{
-//         days: "Sunday",
-//         opening: "10:00am",
-//         closing: "10:00pm",
-//         closed: true
-//       }],
-//       rating: 1
-//     },function (err, location) {
-//       if (err) {
-//         console.log(err);
-//         sendJsonResponse(res, 404, err);
-//       } else {
-//         console.log(location);
-//         sendJsonResponse(res, 201, location)
-//       }
-//     }
-//   );
-// };
+module.exports.initData = function (req, res) {
+  console.log(req.body);
+  Loc.create({
+      name: "test",
+      address: "Losagles, CA",
+      facilities: ["wifi", "sport", "drinks"],
+      coords: [121.436249,31.252834],
+      openingTimes: [{
+        days: "Monday",
+        opening: "5:00am",
+        closing: "5:00pm",
+        closed: true
+      },{
+        days: "Sunday",
+        opening: "10:00am",
+        closing: "10:00pm",
+        closed: true
+      }],
+      rating: 1
+    },function (err, location) {
+      if (err) {
+        console.log(err);
+        sendJsonResponse(res, 404, err);
+      } else {
+        console.log(location);
+        sendJsonResponse(res, 201, location)
+      }
+    }
+  );
+};
 
 /* get a location from db*/
 module.exports.locationsReadOne = function (req, res) {
