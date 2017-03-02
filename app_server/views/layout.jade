@@ -9,7 +9,7 @@ html(ng-app='quicksite')
 		.navbar.navbar-default.navbar-fixed-top
 			.container
 				.navbar-header
-					a.navbar-brand(href='/') quicksite
+					a.navbar-brand(href='/') Quicksite
 					button.navbar-toggle(type='button', data-toggle="collapse", data-target='#nvabar-main')
 						span.con-bar
 						span.con-bar
@@ -20,14 +20,21 @@ html(ng-app='quicksite')
 							li
 								a(href='/about/') About
 		.container
-			block content
+			div(ng-view)
+				block content
 				
 		footer
 			.row
 				.col-sx-12
 					small &copy; 2017
 	script(src='/angular/angular.min.js')
-	script(src='/angular/quicksite.js')
+	script(src='/lib/angular-route.min.js')
+	script(src='/app.js')
+	script(src='/home/home.controller.js')
+	script(src='/common/filters/formatDistance.filter.js')
+	script(src='/common/directives/ratingStars/ratingStars.directive.js')
+	script(src='/common/services/siteData.service.js')
+	script(src='/common/services/geolocation.service.js')
 	script(src='/javascripts/jquery-1.12.4.js')
 	script(src='/bootstrap/js/bootstrap.min.js')
 	script(src='/javascripts/validation.js')

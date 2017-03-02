@@ -61,15 +61,14 @@ var locationListCtrl = function ($scope, quicksiteData, geolocation) {
 	$scope.getData = function (position) {
 		var lng = position.coords.longitude,
 			lat = position.coords.latitude;
-
 		$scope.message = "Searching for near place";
-
 		quicksiteData.locationsByCoords(lat, lng)
 			.then(function successCallback(data) {
 				$scope.message = data.length > 0 ? '' : "NO locaionts found!";
-				$scope.data = {
-					locations: data
-				};
+				$scope.data = data.data;
+				// $scope.data = {
+				// 	locations: data.data
+				// };
 			}, function errorCallback(err) {
 				$scope.message = "Sorry, somethingis goes wrong";
 			});

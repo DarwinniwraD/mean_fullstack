@@ -7,3 +7,7 @@ module.exports.about = function (req, res) {
 		}
 	});
 };
+
+module.exports.angularApp = function(req, res){
+	res.render('layout', { title: 'Quicksite' });
+};
