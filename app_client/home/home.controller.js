@@ -5,6 +5,8 @@
 	*/
 (function () {
 
+	homeCtrl.$inject = ['$scope', 'siteData', 'geolocation'];
+	
 	function homeCtrl($scope, siteData, geolocation) {
 		var vm = this;
 		vm.pageHeader = {
@@ -27,7 +29,6 @@
 					vm.data = {
 						locations: data.data
 					};
-					console.log(vm.data);
 				}, function errorCallback(err) {
 					vm.message = "Sorry, somethingis goes wrong";
 				});
@@ -48,7 +49,45 @@
 	}
 
 
+
 	angular.module('quicksite')
 		.controller('homeCtrl', homeCtrl);
+
+
+	angular.module('quicksite')
+		.directive('ratingStars', function() {
+			return {
+				restrict: 'A',
+				scope: {
+					thisRating: '=rating'
+				},
+				templateUrl: '/common/directives/ratingStars/rating-stars.template.html'
+			};
+		}
+	);
+
+	angular.module('quicksite')
+		.filter('formatDistance', function() {
+			return function (distance) {
+
+				var _isNumeric = function (n) {
+					return !isNaN(parseFloat(n)) && isFinite(n);
+				};
+
+				var numDistance, unit;
+				if (distance && _isNumeric(distance)) {
+					if (distance > 1) {
+						numDistance = parseFloat(distance).toFixed(1);
+						unit = "km";
+					} else {
+						numDistance = parseInt(distance*1000, 10);
+						unit = "m";
+					}
+					return numDistance + unit;
+				} else {
+					return "?";
+				}
+			};
+		});
 
 })();

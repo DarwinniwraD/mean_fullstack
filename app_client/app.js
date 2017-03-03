@@ -1,5 +1,3 @@
-(function () {
-
 	angular.module('quicksite', []);
 	angular.module('quicksite', ['ngRoute']);
 
@@ -16,5 +14,3 @@
 
 	angular.module('quicksite')
 		.config(['$routeProvider', config]);
-
-})();
