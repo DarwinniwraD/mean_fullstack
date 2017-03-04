@@ -1,5 +1,6 @@
 	angular.module('quicksite', []);
-	angular.module('quicksite', ['ngRoute']);
+	angular.module('quicksite', ['ngRoute'])
+		.config(['$routeProvider', config]);
 
 	function config($routeProvider) {
 		$routeProvider
@@ -11,6 +12,3 @@
 			.otherwise({redirectTo: '/'});
 	};
 
-
-	angular.module('quicksite')
-		.config(['$routeProvider', config]);

@@ -1,6 +1,6 @@
 
 describe('app Test', function() {
-	beforeEach(module('quicksite'));
+	beforeEach(module('format-distance-filter'));
 
 	describe('distance format filter test', function() {
 		var formatDistance;

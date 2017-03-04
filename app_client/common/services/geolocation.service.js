@@ -1,5 +1,8 @@
 (function () {
 
+	angular.module('quicksite')
+		.service('geolocation', geolocation);
+
 	function geolocation() {
 		var getPosition = function (cbSucess, cbError, cbNoGeo) {
 			if (navigator.geolocation) {
@@ -13,7 +16,5 @@
 		};
 	};
 
-	angular.module('quicksite')
-		.service('geolocation', geolocation);
 
 })();
