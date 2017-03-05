@@ -4,7 +4,7 @@ var ctrlLocations = require('../controllers/locations');
 var ctrlReviews = require('../controllers/reviews');
 
 router.get('/locations', ctrlLocations.locationsListByDistance);
-router.post('/locations', ctrlLocations.initData);
+// router.post('/locations', ctrlLocations.initData);
 router.post('/locations', ctrlLocations.locationsCreate);
 router.get('/locations/:locationsid', ctrlLocations.locationsReadOne);
 router.put('/locations/:locationsid', ctrlLocations.locationsUpdateOne);
