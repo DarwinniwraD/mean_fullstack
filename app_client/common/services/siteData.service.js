@@ -21,7 +21,8 @@
 		var addReviewById = function (locationsid, data) {
 			return $http({
 				method: 'POST',
-				url: '/api/locations/' + locationsid + '/reviews', data
+				url: '/api/locations/' + locationsid + '/reviews',
+				data: {data: data}
 			});
 		};
 

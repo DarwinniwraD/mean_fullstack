@@ -6,7 +6,7 @@ angular.module('quicksite')
 	function footerGeneric() {
 		return {
 			restrict: 'EA',
-			templateUrl: 'common/directives/footerGeneric/footer-generic-template.html'
+			templateUrl: '/common/directives/footerGeneric/footer-generic-template.html'
 		};
 	};
 	

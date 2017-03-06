@@ -27,7 +27,8 @@
 			var modalInstance = $uibModal.open({
 				animation: true,
 				templateUrl: '/reviewModal/reviewModal.view.html',
-				controller: 'reviewModalCtrl as vm',
+				controller: 'reviewModalCtrl',
+				controllerAs: 'vm',
 				resolve: {
 					locationData : function () {
 						return {
@@ -41,6 +42,6 @@
 				vm.data.location.reviews.push(data);
 			});
 
-		}
-	}
+		};
+	};
 })();

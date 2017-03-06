@@ -1,25 +1,24 @@
+(function () {
+	
 	angular.module('quicksite', []);
 	angular.module('quicksite', ['ngRoute', 'ngSanitize', 'ui.bootstrap']);
-
-	angular.module('quicksite')
-		.config(['$routeProvider', '$locationProvider', config]);
 
 	function config($routeProvider, $locationProvider) {
 		$routeProvider
 			.when('/', {
+				templateUrl: '/home/home.view.html',
 				controller: 'homeCtrl',
-				controllerAs: 'vm',
-				templateUrl: '/home/home.view.html'
+				controllerAs: 'vm'
 			})
 			.when('/about', {
+				templateUrl: '/common/views/generic.view.html',
 				controller: 'aboutCtrl',
-				controllerAs: 'vm',
-				templateUrl: '/common/views/generic.view.html'
+				controllerAs: 'vm'
 			})
 			.when('/location/:locationid', {
+				templateUrl: '/locationDetail/location-detail-template.html',
 				controller: 'locationDetailCtrl',
-				controllerAs: 'vm',
-				templateUrl: '/locationDetail/location-detail-template.html'
+				controllerAs: 'vm'
 			})
 			.otherwise({redirectTo: '/'});
 		$locationProvider.html5Mode({
@@ -28,3 +27,7 @@
 		});
 	};
 
+	angular.module('quicksite')
+		.config(['$routeProvider', '$locationProvider', config]);
+
+})();

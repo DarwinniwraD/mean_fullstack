@@ -15,7 +15,7 @@
 		// debug the ie8,9 location
 		if (window.location.pathname !== '/') {
 	      window.location.href = '/#' + window.location.pathname;
-	    }
+	    };
 		var vm = this;
 		vm.pageHeader = {
 			title : "Siteeeeeeeeee",
