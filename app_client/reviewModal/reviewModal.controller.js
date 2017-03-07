@@ -22,7 +22,6 @@
 				vm.formError = "All fields required, please try again!"
 				return false;
 			} else {
-				// console.log(vm.formData);
 				// return false;
 				vm.doAddReview(vm.locationData.locationid, vm.formData);
 			};
@@ -30,16 +29,17 @@
 		vm.doAddReview = function (locationsid, formData) {
 			siteData.addReviewById(locationsid, {
 				author: formData.name,
-				reting: formData.reting,
+				rating: formData.rating,
 				reviewText: formData.reviewText
 			}).then(doneCallbacks, failCallbacks);
 
-			function doneCallbacks(data) {
-				// console.log('Success');
-				vm.modal.close(data);
+			function doneCallbacks(formData) {
+				console.log('Success');
+				console.log(formData);
+				vm.modal.close(formData);
 			};
 
-			function failCallbacks(data) {
+			function failCallbacks(formData) {
 				vm.formError = "your review has not been saved, try again";
 			};
 			return false;

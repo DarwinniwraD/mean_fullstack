@@ -22,7 +22,10 @@
 			return $http({
 				method: 'POST',
 				url: '/api/locations/' + locationsid + '/reviews',
-				data: {data: data}
+				data: data,
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				}
 			});
 		};
 
