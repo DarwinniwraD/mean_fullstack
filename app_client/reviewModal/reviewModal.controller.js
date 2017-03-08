@@ -35,7 +35,7 @@
 
 			function doneCallbacks(formData) {
 				console.log('Success');
-				console.log(formData);
+				// console.log(formData);
 				vm.modal.close(formData);
 			};
 

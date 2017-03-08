@@ -22,11 +22,13 @@
 			return $http({
 				method: 'POST',
 				url: '/api/locations/' + locationsid + '/reviews',
-				data: data,
+				// param the POST data
+				data: $.param(data),
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				}
 			});
+			// return $http.post('/api/locations/' + locationsid + '/reviews', data);
 		};
 
 
